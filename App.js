@@ -6,6 +6,8 @@ import {
   StyleSheet,
   Text,
   StatusBar,
+  Pressable,
+  View,
 } from 'react-native';
 
 const NUM_COLUMNS = 2;
@@ -23,13 +25,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
+  },
+  rowHalf: {
     width: '50%',
     padding: 10,
   },
   amount: {
     fontSize: 32,
-    width: '50%',
-    padding: 10,
     textAlign: 'right',
   },
 });
@@ -39,8 +41,30 @@ const TextItem = ({ item }) => {
   return (<Text style={styles.title}>{item.text}</Text>);
 }
 
-const AmountTextItem = ({ item }) => {
-  return (<Text style={styles.amount}>{item.amount}</Text>);
+rowPressed = (item) => {
+  console.log('pressed ' + item.id);
+}
+
+const AmountTextItemPressable = ({ item }) => {
+  return (
+    <View style={styles.rowHalf}>
+      <Pressable
+        onPress={()=>rowPressed(item)}>
+          <Text style={styles.amount}>{item.amount}</Text>        
+      </Pressable>
+    </View>
+    );
+}
+
+const TextItemPressable = ({ item }) => {
+  return (
+    <View style={styles.rowHalf}>
+      <Pressable
+        onPress={()=>rowPressed(item)}>
+          <Text style={styles.title}>{item.text}</Text>        
+      </Pressable>
+    </View>
+    );
 }
 
 const Item = ({ item }) => {
@@ -48,7 +72,9 @@ const Item = ({ item }) => {
     case 0:
       return <TextItem item={item} />
     case 1:
-      return <AmountTextItem item={item} />
+      return <AmountTextItemPressable item={item} />
+    case 2:
+      return <TextItemPressable item={item}/>
     default:
       return null;
   }
@@ -60,18 +86,20 @@ elements data of the list.
 
 type
 0: Text (for column name or item)
-1: Text amount
+1: Text amount, pressable
+2: Text, pressable
 
 TODO: useState
 TODO: remove title from item data
+TODO: show in other way, pack the same ids in a object.
 */
 const ItemData = [
   { type: 0, text: "Item" }, 
   { type: 0, text: "Amount" },
-  { type: 0, text: "Apple" },
-  { type: 1, amount: 10 },
-  { type: 0, text: "Pen" },
-  { type: 1, amount: 100 },
+  { type: 2, id: 0x01, text: "Apple" },
+  { type: 1, id: 0x01, amount: 10 },
+  { type: 2, id: 0x02, text: "Pen" },
+  { type: 1, id: 0x02, amount: 100 },
 ];
 
 
